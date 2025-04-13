@@ -1,5 +1,5 @@
 set GOSUMDB=off
-set CGO_ENABLED=0
+set CGO_ENABLED=1
 set GOOS=linux
 cd ./qubership-apihub-sniffer-agent
 go mod tidy

@@ -33,7 +33,7 @@ WORKDIR /workspace/qubership-apihub-sniffer-agent
 
 RUN go mod tidy
 
-RUN set GOSUMDB=off && set CGO_ENABLED=0 && go mod tidy && go mod download && GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build .
+RUN set GOSUMDB=off && set CGO_ENABLED=1 && go mod tidy && go mod download && GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build .
 
 
 FROM docker.io/golang:1.23.4-alpine3.21
