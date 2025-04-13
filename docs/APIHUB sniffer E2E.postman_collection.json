@@ -1,0 +1,749 @@
+{
+    "info": {
+        "name": "APIHUB sniffer E2E?",
+        "_postman_id": "cda44ebd-c02f-4696-a1cd-d8ac03ea680a",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Capture packets",
+            "item": [
+                {
+                    "name": "Start capture TCP",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "var data = JSON.parse(responseBody);\r",
+                                    "pm.environment.set(\"capture_id\",data.id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "url": {
+                            "raw": "{{capture_endpoint}}/api/v1/admin/capture/start",
+                            "host": [
+                                "{{capture_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "start"
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "{{SNIFFER_API_KEY}}",
+                                "description": "",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"filter\":\"tcp and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)\",\n    \"duration\":\"30s\",\n    \"namespaces\":[\"api-hub-dev-fe\", \"api-hub-dev\"]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "Capture status",
+                    "request": {
+                        "url": {
+                            "raw": "{{capture_endpoint}}/api/v1/admin/capture/status",
+                            "host": [
+                                "{{capture_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "status"
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "{{SNIFFER_API_KEY}}",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "Stop capture indirect",
+                    "request": {
+                        "url": {
+                            "raw": "{{capture_endpoint}}/api/v1/admin/capture/stop",
+                            "host": [
+                                "{{capture_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "stop"
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "{{SNIFFER_API_KEY}}",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n    \"id\":\"{{capture_id}}\"\r\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "Interface list",
+                    "request": {
+                        "url": {
+                            "raw": "{{capture_endpoint}}/api/v1/admin/capture/interfaces",
+                            "host": [
+                                "{{capture_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "interfaces"
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "{{SNIFFER_API_KEY}}",
+                                "description": "",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "IP address map (non-production)",
+                    "request": {
+                        "url": {
+                            "raw": "{{capture_endpoint}}/api/v1/admin/capture/addresses",
+                            "host": [
+                                "{{capture_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "addresses"
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "{{SNIFFER_API_KEY}}",
+                                "description": "",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "Neighbor list (non-production)",
+                    "request": {
+                        "url": {
+                            "raw": "{{capture_endpoint}}/api/v1/admin/capture/neighbours",
+                            "host": [
+                                "{{capture_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "neighbours"
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "{{SNIFFER_API_KEY}}",
+                                "description": "",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "Namespace list",
+                    "request": {
+                        "url": {
+                            "raw": "{{capture_endpoint}}/api/v1/admin/capture/namespaces",
+                            "host": [
+                                "{{capture_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "namespaces"
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "{{SNIFFER_API_KEY}}",
+                                "description": "",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Load capture data",
+            "item": [
+                {
+                    "name": "Load indirect",
+                    "request": {
+                        "url": {
+                            "raw": "{{report_endpoint}}/api/v1/admin/capture/{{capture_id}}/load",
+                            "host": [
+                                "{{report_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "{{capture_id}}",
+                                "load"
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "api-hub-dev",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "Loading status",
+                    "request": {
+                        "url": {
+                            "raw": "{{report_endpoint}}/api/v1/admin/capture/{{capture_id}}/status",
+                            "host": [
+                                "{{report_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "{{capture_id}}",
+                                "status"
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "api-hub-dev",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "Delete capture data",
+                    "request": {
+                        "url": {
+                            "raw": "{{report_endpoint}}/api/v1/admin/capture/{{capture_id}}/delete",
+                            "host": [
+                                "{{report_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "{{capture_id}}",
+                                "delete"
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "api-hub-dev",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "Clean up capture data",
+                    "request": {
+                        "url": {
+                            "raw": "{{report_endpoint}}/api/v1/admin/capture/S3/cleanup",
+                            "host": [
+                                "{{report_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "admin",
+                                "capture",
+                                "S3",
+                                "cleanup"
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "api-hub-dev",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Reports",
+            "item": [
+                {
+                    "name": "Generate service operation report",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "var data = JSON.parse(responseBody);\r",
+                                    "pm.environment.set(\"report_uuid\",data.report_id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "url": {
+                            "raw": "{{report_endpoint}}/api/v1/report/service/operations/generate",
+                            "host": [
+                                "{{report_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "report",
+                                "service",
+                                "operations",
+                                "generate"
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "api-hub-dev",
+                                "description": "an internal API key",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n    \"capture_id\":\"{{capture_id}}\",\r\n    \"service_name\":\"apihub-backend\",\r\n    \"service_version\":\"2024.3.1\"\r\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "Service operation report (Excel)",
+                    "request": {
+                        "url": {
+                            "raw": "{{report_endpoint}}/api/v1/report/service/operations/render",
+                            "host": [
+                                "{{report_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "report",
+                                "service",
+                                "operations",
+                                "render"
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "api-hub-dev",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n    \"report_id\":\"{{report_uuid}}\",\r\n    \"output_format\":\"excel\"\r\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "name": "Service operation report (json)",
+                    "request": {
+                        "url": {
+                            "raw": "{{report_endpoint}}/api/v1/report/service/operations/render",
+                            "host": [
+                                "{{report_endpoint}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "report",
+                                "service",
+                                "operations",
+                                "render"
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "api-key",
+                                "value": "api-hub-dev",
+                                "type": "default"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n    \"report_id\":\"{{report_uuid}}\",\r\n    \"output_format\":\"json\"\r\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "text"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRQzd2RTBPTmlxMk0wSlQKYnA3cjhNSDRkRTlucWJmb3B5dUl2blRnWEhnQVgxOGpxVWVNRzlncXdxL3paZC8rOUJ4YVhucFFOTVlsNXFobgowNmpFRXFLNDc3THhLRnVQTU5GblFRNW9HUStPNGVwT3g4bWRtMnBTTnBNNmRrVXdkS3pzTW9HYjBnSzVTYld0CkRCQXMxL1F0TStGVHBYZWN6UEUrejYzWEc4eDY4OG9sT1RBdWZZVjZVZWJRY0xoS1BRUlVpMndJUitBdXBxaXkKeDBBVm5GdTFpb0NpR0ZYUDVlS0hBdU42YW1tVy85bmFabG8yTkZMb0twK01tMTg5U1JCYm92MmN3enE4NWFJWgpKS3dObi9XbXZvcmFlV2VncDhhazRCaW9ZNm5uaTlWNnpESG9WUkZiUUQ0aW04MzZQUnZVZFB0aDRoWFZmd1cwCmo4WUM1cFM1QWdNQkFBRUNnZ0VBSCtyRmx2THlsQU5tOVZSTFJJV3NGSmVCb0hna1FqT1puU2YwS3VqTnBoS1EKMURsRlpyYWRLN2ZwdmhIRjRVeVRQWEh1alpCTFY4bzlPMW1xeVpyNWUwT1ZRcGEvNmpvOGY3ZDV3WXp4TGpPTwphRkpqSHA1N2x2cWNVVVltUVRTMDZYczB1YzhjazIvS3FWN3hxUTRWLzFGZ3I1M2tGZzVwdldvRmZockZ5dWs0CnE3RE1BT2NFVXRieHhmTVNNTWY4ZldaRnpFLzlBRHhmK1VXQWlMS3B3UFBUNnoySEl1R2kwZ2JNdzg3WCtFcFgKeXl3RTZCT2V4eU1IYzhIR0VQd2JiT2ZBbVdmUUQzN1F1VHFYNVdwQ3BsM0Z2dWFlbzZTeDd3Rm4wK0tCZkdVdgo4clhpTitnK1ZvWjVmd1FDQ1VwRCtBQmFaNWVMZXc3NUluYnpQVGJwWVFLQmdRRDBVWll0eStFb2hjc0lVTVdmCksrVTdPQzU3YTlnRGVocVpNZmRxaEdNd2xmdWVQbk1ybTFyN1psQ0tLRmVPTHlIZGNGdmZOZ0MvN2dWeFN3UEEKL1hGbGtKb3E2ZlRGeW01ZktlUGZJbENhUWlocUJvRVIwazAyTGxybkFoTHE4a3kyd2FLcmdud1IvTEdLd1h3RApmTlRTMCs1cWduQUZXRUtWSFpPeDR1SVJWUUtCZ1FERXRpWEw1SXBTVi9BNU85NlB1WVVFOUdtN3FSL3J4YjlpCmFMNnkwcUcrMHBrRkR3T0t5WmdOVW1FNW1YNFJtblFRYWlNYjdHSkp0anQwT1RObWZldUNWUFRBMTZhVklTM2UKNVVCUXFnSWNHaTRXK28vQ0o4cktHQTdCZnh4SWJTcWVEekJOK1NqeTVnMU1kVU05OENTcEZRTlJJMmo4dDBOcgpqRWFldHBtRjFRS0JnUUMrT2VQM1psMjZJbW9SNEdudVk4d0lqdGJLTEE2MXJsV1ZYKzBuRjBydm9tZVdMME9XCitWQWVtK3dybGZ1TjdpNnM3blhwMW05QkFQOWwxYVZubHkyNmlac3Z2SmRqaFJqb3FZSU4wdmIxRkh2SkNhVm4KRGRvbVRITmttQjNJcHIyS01qd0kxQURzTkZhOEZhZ01ReDZseEhOR3BLYTUwcDJNNHNtRFlJYnFQUUtCZ1FERApSdHNnbklEZ0c2SkMvdmNERUxWSFpPYnR2NGdMdzJRcGFqZ2RSMUlBSUFwOTVoaXJGMU5WcmprTU9CN1psTTJ4CldkditwVnd4TnJHd3YvUVJ3K0Vlb2YzU3pvSDFPMW5SRXg0VXRhQ2dpekRENlByN1VBdFZNaXE3MWRhYTQ1eFMKQ2x2Mm0ra1ZzR0QxVE5keXprbG1mSkN0Wkl5ZGk4Um5LSHNXcGNpai9RS0JnUURiM0NSdVR6OEN0WkdpRHlPbQp1SmxPNXNuUGJVS3hIVkZocEYvUmFFSFVCODlnNHgrTVVSZzZzMU5BSWR4SVZJYlpjWlNiY28yYkNCdFEvOEtsClVVc1lrZnh1WFoxZHBmYi9tSWlKTDlLdElDa0U2Tzc4TjMrVkJJVk8wSzUycWlzSUtlRE1JazRGeVdIVHFkeU0KaTNCQ1dydmk1dGszTlp4Si9UTUJKN3dvSmc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        }
+    ],
+    "event": [],
+    "variable": []
+}

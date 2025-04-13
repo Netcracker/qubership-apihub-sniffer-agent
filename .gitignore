@@ -1,0 +1,14 @@
+qubership-apihub-sniffer-agent/.idea
+qubership-apihub-sniffer-agent/go.sum
+.idea
+.vscode
+qubership-apihub-sniffer-agent/data/**
+qubership-apihub-sniffer-agent/static/**
+qubership-apihub-sniffer-agent/logs/**
+qubership-apihub-sniffer-agent/apihub-agent.exe
+qubership-apihub-sniffer-agent/apihub-agent
+qubership-apihub-sniffer-agent/bin/**
+
+*.bak
+*.iml
+*.orig
