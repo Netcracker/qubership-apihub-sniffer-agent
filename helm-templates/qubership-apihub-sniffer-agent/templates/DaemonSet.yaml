@@ -1,0 +1,157 @@
+---
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  annotations:
+    deprecated.daemonset.template.generation: "42"
+  name: 'qubership-apihub-sniffer-agent'
+  labels:
+    name: 'qubership-apihub-sniffer-agent'
+    app.kubernetes.io/name: 'qubership-apihub-sniffer-agent'
+    app.kubernetes.io/version: '{{ .Values.qubershipApihubSnifferAgent.version }}'
+    app.kubernetes.io/component: 'backend'
+    app.kubernetes.io/part-of: 'qubership-apihub-sniffer-agent'
+    app.kubernetes.io/managed-by: 'helm'
+spec:
+  template:
+    metadata:
+      labels:
+        name: 'qubership-apihub-sniffer-agent'
+        app.kubernetes.io/name: 'qubership-apihub-sniffer-agent'
+        app.kubernetes.io/version: '{{ .Values.qubershipApihubSnifferAgent.version }}'
+        app.kubernetes.io/component: 'backend'
+        app.kubernetes.io/part-of: 'qubership-apihub-sniffer-agent'
+        app.kubernetes.io/managed-by: 'helm'
+        ssd: "true"
+    spec:
+#      nodeSelector:
+#        {{.Values.qubershipApihubSnifferAgent.spec.nodeSelectorKey}}: '{{ .Values.qubershipApihubSnifferAgent.spec.nodeSelectorValue }}'
+      serviceAccountName: 'qubership-apihub-sniffer-agent'
+      containers:
+      - name: 'qubership-apihub-sniffer-agent'
+        image: '{{ .Values.qubershipApihubSnifferAgent.image.repository }}:{{ .Values.qubershipApihubSnifferAgent.image.tag }}'
+        ports:
+        - name: web
+          containerPort: 18080
+          protocol: TCP
+        env:
+        - name: LOG_LEVEL
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.logLevel }}'
+#        - name: CAPTURE_INTERFACE
+#          value: '{{ .Values.qubershipApihubSnifferAgent.env.captureInterface }}'
+        - name: LISTEN_ADDRESS
+          value: ':8080'
+        - name: PRODUCTION_MODE
+          value: 'false'
+        - name: CAPTURE_DIRECTORY
+          value: '/tmp'
+        - name: SNIFFER_API_KEY
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.snifferApiKey }}'
+#          valueFrom:
+#            secretKeyRef:
+#              name: 'qubership-apihub-sniffer-agent-keys-secret'
+#              key: api_key
+        - name: SNIFFER_INTERNAL_KEY
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.snifferInternalKey }}'
+#          valueFrom:
+#            secretKeyRef:
+#              name: 'qubership-apihub-sniffer-agent-keys-secret'
+#              key: private_key
+        - name: STORAGE_SERVER_USERNAME
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.storageServerUsername }}'
+#          valueFrom:
+#            secretKeyRef:
+#              name: 'qubership-apihub-sniffer-agent-minio-secret'
+#              key: minio_access_key_id
+        - name: STORAGE_SERVER_BUCKET_NAME
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.storageServerBucketName }}'
+#          value: 'api-hub-dev'
+        - name: STORAGE_SERVER_CRT
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.storageServerCrt }}'
+#          valueFrom:
+#            secretKeyRef:
+#              name: 'qubership-apihub-sniffer-agent-minio-secret'
+#              key: minio_crt
+        - name: STORAGE_SERVER_URL
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.storageServerUrl }}'        
+#          value: 'apihub-minio.s3.netcracker.com'
+        - name: STORAGE_SERVER_PASSWORD
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.storageServerPassword }}'
+#          valueFrom:
+#            secretKeyRef:
+#              name: 'qubership-apihub-sniffer-agent-minio-secret'
+#              key: minio_secret_access_key
+        - name: MINIO_STORAGE_ACTIVE
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.minioStorageActive }}'
+#          value: 'true'
+        - name: PAAS_PLATFORM
+          value: 'KUBERNETES'
+#        - name: PAAS_VERSION
+#          value: 'v1.28'
+        - name: KUBECONFIG
+          value: 'on'
+        - name: KUBE_NODE_PREFIX
+          value: 'qubership-apihub-sniffer-agent-'
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: CLOUD_NAME
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.cloudName }}'
+        resources:
+          requests:
+            cpu: {{ .Values.qubershipApihubSnifferAgent.resource.cpu.request }}
+            memory: '{{ .Values.qubershipApihubSnifferAgent.resource.memory.request }}'
+          limits:
+            cpu: {{ .Values.qubershipApihubSnifferAgent.resource.cpu.limit }}
+            memory: '{{ .Values.qubershipApihubSnifferAgent.resource.memory.limit }}'
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: web
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: web
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+        startupProbe: 
+          httpGet:
+            path: /startup
+            port: web
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          periodSeconds: 5
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false # if false then enable CAP_SYS_ADMIN
+          seccompProfile:
+            type: Unconfined
+          allowPrivilegeEscalation: true # if true then enable CAP_SYS_ADMIN
+          capabilities:
+            add:
+              - NET_ADMIN
+              - NET_RAW
+              - SYS_ADMIN # this option required for above
+      hostNetwork: true
+      hostPID: true
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: name
+                  operator: In
+                  values:
+                  - 'qubership-apihub-sniffer-agent'
+              topologyKey: 'kubernetes.io/hostname'
+  selector:
+    matchLabels:
+      name: 'qubership-apihub-sniffer-agent'
+

@@ -1,0 +1,13 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+    name: 'qubership-apihub-sniffer-agent'
+spec:
+    ports:
+    -   name: web
+        port: 18080
+        targetPort: 18080
+    selector:
+        name: 'qubership-apihub-sniffer-agent'
+

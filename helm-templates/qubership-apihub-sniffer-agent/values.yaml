@@ -1,0 +1,72 @@
+# PAAS_PLATFORM: "KUBERNETES"
+# PAAS_VERSION: ''
+qubershipApihubSnifferAgent:
+  version: ''
+  
+# REPLICAS: 1
+
+  image:
+    repository: 'ghcr.io/netcracker/qubership-apihub-sniffer-agent' 
+    tag: 'dev'
+
+  # Section with resource limits
+  # Mandatory
+  # Below are the default values which are good enough for any cases including production
+  resource:
+    memory:
+      request: "256Mi"
+      limit: "256Mi"
+    cpu:  
+      request: "30m"
+      limit: "1"
+
+
+#SERVICE: "apihub-sniffer-agent"
+#SERVICE_NAME: "apihub-sniffer-agent"
+#DEPLOYMENT_RESOURCE_NAME: "apihub-sniffer-agent"
+#PART_OF: 'APIHUB'
+#DELIMITER: '-'
+
+#SERVICE_ACCOUNT: "apihub-sniffer-agent"
+#SERVICE_ACCOUNT_APIHUB_AGENT_SECRET_NAME: "apihub-sniffer-agent-secret"
+
+#NAMESPACE: ''  
+
+  env:
+    logLevel: 'DEBUG'
+#    captureInterface: 'all'
+    
+    storageServerUsername: 'Rdnx9KZpPpzPxwurEhSh'
+    storageServerPassword: 'ejGNYm5px7rI1SaQw0EwPSLkPvVM6cb6Vl1ffoip'
+    storageServerCrt: ''
+    storageServerUrl: 'https://localhost:9000'
+    storageServerBucketName: 'qubership-apihub-sniffer-minio-bucket'
+    minioStorageActive: 'true'
+    snifferApiKey: 'Rdnx9KZpPpzPxwurEhSh'
+    snifferInternalKey: 'ejGNYm5px7rI1SaQw0EwPSLkPvVM6cb6Vl1ffoip'
+
+#STORAGE_SERVER_USERNAME: ''
+#STORAGE_SERVER_PASSWORD: ''
+#STORAGE_SERVER_CRT: ''
+#STORAGE_SERVER_URL: ''
+#STORAGE_SERVER_BUCKET_NAME: ''
+#MINIO_STORAGE_ACTIVE: false
+
+### ORIGIN_ALLOWED: '' #TO_BE_SET
+
+#SNIFFER_API_KEY:  '' #TO_BE_SET
+#SNIFFER_INTERNAL_KEY:  '' #TO_BE_SET
+
+### CAPTURE_INTERFACE:  '' #TO_BE_SET
+### CAPTURE_DIRECTORY:  '' #TO_BE_SET
+### KUBE_NODE_PREFIX:  '' #TO_BE_SET
+### KUBECONFIG:  '' #TO_BE_SET
+    cloudName: ''
+#CLOUD_NAME: '' #TO_BE_SET
+    agentUrl: 'qubership-apihub-sniffer-agent.localhost'
+  spec:
+    nodeSelectorKey: ''
+    nodeSelectorValue: ''
+#NODE_SELECTOR_KEY: 'region'
+#NODE_SELECTOR_VALUE: 'apihub-projects'
+

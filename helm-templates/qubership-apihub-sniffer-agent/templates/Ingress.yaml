@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: qubership-apihub-sniffer-agent
+    annotations:
+        nginx.ingress.kubernetes.io/proxy-connect-timeout: '3600'
+        nginx.ingress.kubernetes.io/proxy-read-timeout: '3600'
+        nginx.ingress.kubernetes.io/proxy-send-timeout: '3600'
+    labels:
+        app.kubernetes.io/part-of: 'qubership-apihub-sniffer-agent'
+        app.kubernetes.io/managed-by: 'helm'
+
+spec:
+    ingressClassName: nginx
+    rules:
+        -   host: '{{ .Values.qubershipApihubSnifferAgent.env.agentUrl }}'
+            http:
+                paths:
+                    -   path: /
+                        pathType: ImplementationSpecific
+                        backend:
+                            service:
+                                name: 'qubership-apihub-sniffer-agent'
+                                port:
+                                    name: web
