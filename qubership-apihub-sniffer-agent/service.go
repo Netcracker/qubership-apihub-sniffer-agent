@@ -93,10 +93,19 @@ func init() {
 	if basePath == "" {
 		basePath = "."
 	}
-	mw := io.MultiWriter(os.Stderr, &lumberjack.Logger{
-		Filename: path.Join(basePath, "logs", "apihub_sniffer_agent.log"),
-		MaxSize:  10, // megabytes
-	})
+	logFilePath := os.Getenv("LOG_FILE_PATH") //Example: /logs/apihub.log
+	var mw io.Writer
+	if logFilePath != "" {
+		mw = io.MultiWriter(
+			os.Stdout,
+			&lumberjack.Logger{
+				Filename: logFilePath,
+				MaxSize:  10, // megabytes
+			},
+		)
+	} else {
+		mw = os.Stdout
+	}
 	log.SetFormatter(&prefixed.TextFormatter{
 		DisableColors:   true,
 		TimestampFormat: "2006-01-02 15:04:05",
