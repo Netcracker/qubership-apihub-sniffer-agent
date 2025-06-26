@@ -2,12 +2,19 @@
 kind: Service
 apiVersion: v1
 metadata:
-    name: 'qubership-apihub-sniffer-agent'
+  name: 'qubership-apihub-sniffer-agent-service'
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    name: qubership-apihub-sniffer-agent
+    app.kubernetes.io/name: 'qubership-apihub-sniffer-agent'
+    app.kubernetes.io/part-of: qubership-apihub-sniffer-agent
+    app.kubernetes.io/managed-by: helm
 spec:
-    ports:
-    -   name: web
-        port: 18080
-        targetPort: 18080
-    selector:
-        name: 'qubership-apihub-sniffer-agent'
+  type: ClusterIP
+  ports:
+  - name: web
+    port: 8080
+    targetPort: 8080
+  selector:
+    name: 'qubership-apihub-sniffer-agent'
 

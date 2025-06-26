@@ -24,21 +24,17 @@ spec:
         app.kubernetes.io/managed-by: 'helm'
         ssd: "true"
     spec:
-#      nodeSelector:
-#        {{.Values.qubershipApihubSnifferAgent.spec.nodeSelectorKey}}: '{{ .Values.qubershipApihubSnifferAgent.spec.nodeSelectorValue }}'
       serviceAccountName: 'qubership-apihub-sniffer-agent'
       containers:
       - name: 'qubership-apihub-sniffer-agent'
         image: '{{ .Values.qubershipApihubSnifferAgent.image.repository }}:{{ .Values.qubershipApihubSnifferAgent.image.tag }}'
         ports:
         - name: web
-          containerPort: 18080
+          containerPort: 8080
           protocol: TCP
         env:
         - name: LOG_LEVEL
           value: '{{ .Values.qubershipApihubSnifferAgent.env.logLevel }}'
-#        - name: CAPTURE_INTERFACE
-#          value: '{{ .Values.qubershipApihubSnifferAgent.env.captureInterface }}'
         - name: LISTEN_ADDRESS
           value: ':8080'
         - name: PRODUCTION_MODE
@@ -46,48 +42,38 @@ spec:
         - name: CAPTURE_DIRECTORY
           value: '/tmp'
         - name: SNIFFER_API_KEY
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.snifferApiKey }}'
-#          valueFrom:
-#            secretKeyRef:
-#              name: 'qubership-apihub-sniffer-agent-keys-secret'
-#              key: api_key
+          valueFrom:
+            secretKeyRef:
+              name: 'qubership-apihub-sniffer-agent-keys-secret'
+              key: api_key
         - name: SNIFFER_INTERNAL_KEY
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.snifferInternalKey }}'
-#          valueFrom:
-#            secretKeyRef:
-#              name: 'qubership-apihub-sniffer-agent-keys-secret'
-#              key: private_key
+          valueFrom:
+            secretKeyRef:
+              name: 'qubership-apihub-sniffer-agent-keys-secret'
+              key: internal_key
         - name: STORAGE_SERVER_USERNAME
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.storageServerUsername }}'
-#          valueFrom:
-#            secretKeyRef:
-#              name: 'qubership-apihub-sniffer-agent-minio-secret'
-#              key: minio_access_key_id
+          valueFrom:
+            secretKeyRef:
+              name: 'qubership-apihub-sniffer-agent-s3-secret'
+              key: storage_server_username
         - name: STORAGE_SERVER_BUCKET_NAME
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.storageServerBucketName }}'
-#          value: 'api-hub-dev'
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.s3Storage.bucketName }}'
         - name: STORAGE_SERVER_CRT
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.storageServerCrt }}'
-#          valueFrom:
-#            secretKeyRef:
-#              name: 'qubership-apihub-sniffer-agent-minio-secret'
-#              key: minio_crt
+          valueFrom:
+            secretKeyRef:
+              name: 'qubership-apihub-sniffer-agent-s3-secret'
+              key: storage_server_crt
         - name: STORAGE_SERVER_URL
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.storageServerUrl }}'        
-#          value: 'apihub-minio.s3.netcracker.com'
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.s3Storage.url }}'        
         - name: STORAGE_SERVER_PASSWORD
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.storageServerPassword }}'
-#          valueFrom:
-#            secretKeyRef:
-#              name: 'qubership-apihub-sniffer-agent-minio-secret'
-#              key: minio_secret_access_key
+          valueFrom:
+            secretKeyRef:
+              name: 'qubership-apihub-sniffer-agent-s3-secret'
+              key: storage_server_password
         - name: MINIO_STORAGE_ACTIVE
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.minioStorageActive }}'
-#          value: 'true'
+          value: '{{ .Values.qubershipApihubSnifferAgent.env.s3Storage.active }}'
         - name: PAAS_PLATFORM
           value: 'KUBERNETES'
-#        - name: PAAS_VERSION
-#          value: 'v1.28'
         - name: KUBECONFIG
           value: 'on'
         - name: KUBE_NODE_PREFIX
@@ -109,19 +95,19 @@ spec:
           httpGet:
             path: /live
             port: web
-          initialDelaySeconds: 5
+          initialDelaySeconds: 50
           timeoutSeconds: 2
         readinessProbe:
           httpGet:
             path: /ready
             port: web
-          initialDelaySeconds: 5
+          initialDelaySeconds: 50
           timeoutSeconds: 2
         startupProbe: 
           httpGet:
             path: /startup
             port: web
-          initialDelaySeconds: 5
+          initialDelaySeconds: 50
           timeoutSeconds: 2
           periodSeconds: 5
         securityContext:
@@ -138,6 +124,7 @@ spec:
               - NET_RAW
               - SYS_ADMIN # this option required for above
       hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       hostPID: true
       affinity:
         podAntiAffinity:
@@ -154,4 +141,3 @@ spec:
   selector:
     matchLabels:
       name: 'qubership-apihub-sniffer-agent'
-

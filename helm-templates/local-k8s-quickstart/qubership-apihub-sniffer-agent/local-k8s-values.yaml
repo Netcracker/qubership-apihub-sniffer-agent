@@ -14,18 +14,19 @@ qubershipApihubSnifferAgent:
       request: "30m"
       limit: "1"
   env:
-    logLevel: 'INFO'
-    s3StorageUsername: ''
-    s3StoragePassword: ''
-#   public.crt | base64
-    s3StorageCrt: ''
-    s3StorageUrl: 'minio.minio-tenant'
-    s3StorageBucketName: 'qubership-apihub-sniffer-s3-bucket'
-    s3StorageActive: 'true'
+    logLevel: 'DEBUG'
     snifferApiKey: ''
     snifferInternalKey: ''
     cloudName: ''
     agentUrl: 'qubership-apihub-sniffer-agent.localtest.me'
+    s3Storage:
+      username: ''
+      password: ''
+#   public.crt | base64
+      crt: ''
+      url: 'minio.minio-tenant'
+      bucketName: 'qubership-apihub-sniffer-s3-bucket'
+      active: 'true'
   spec:
     nodeSelectorKey: ''
     nodeSelectorValue: ''
