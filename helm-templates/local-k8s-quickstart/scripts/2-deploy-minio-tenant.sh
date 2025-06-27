@@ -5,15 +5,17 @@ helm install minio-tenant --namespace minio-tenant --create-namespace -f ../mini
 wait_for_pod_ready "myminio-pool-0-0" "minio-tenant" 600
 
 echo "" ; echo "Generate MinIO Accesskey"
-export INF_NAME='qubership-apihub'
-export DESCRP="($(date +%Y-%m-%d:%H:%M:%S)) needed for sniffer agent and trffic analizer"
 # Default MinIO administrative credential
 export ADM_USR='minio'
 export ADM_PASS='minio123'
+# Accesskey secrets
 export ACC_KEY=$(generate_random_string 20)
 export ACC_SEC=$(generate_random_string 30)
+# Accesskey Information
+export INFO_NAME='qubership-apihub'
+export DESCRP="($(date +%Y-%m-%d:%H:%M:%S)) needed for sniffer agent and trffic analizer"
 
-kubectl exec -n minio-tenant myminio-pool-0-0  -it -- /bin/sh  -c " mc alias set myminio https://minio.minio-tenant.svc '$ADM_USR' '$ADM_PASS' ;mc admin accesskey create myminio/ --access-key '$ACC_KEY' --secret-key '$ACC_SEC' --name '$INF_NAME'  --description '$DESCRP' "
+kubectl exec -n minio-tenant myminio-pool-0-0  -it -- /bin/sh  -c " mc alias set myminio https://minio.minio-tenant.svc '$ADM_USR' '$ADM_PASS' ;mc admin accesskey create myminio/ --access-key '$ACC_KEY' --secret-key '$ACC_SEC' --name '$INFO_NAME'  --description '$DESCRP' "
 export MINIO_CRT=$(kubectl get secrets  -n minio-tenant myminio-tls  -o jsonpath={.data.public\\.crt})
 
 envsubst < ../qubership-apihub-sniffer-agent/local-minio-secrets.yaml.template > ../qubership-apihub-sniffer-agent/local-minio-secrets.yaml 

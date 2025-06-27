@@ -1,11 +1,11 @@
+# Section with APIHUB SNIFFER AGENT configuration
 qubershipApihubSnifferAgent:
-  version: ''
   image:
     repository: 'ghcr.io/netcracker/qubership-apihub-sniffer-agent' 
     tag: 'dev'
   # Section with resource limits
   # Mandatory
-  # Below are the default values which are good enough for any cases including production
+  # Below are the default values which are good enough for quick start, sandbox and over non production cases
   resource:
     memory:
       request: "256Mi"
@@ -13,20 +13,29 @@ qubershipApihubSnifferAgent:
     cpu:  
       request: "30m"
       limit: "1"
+  # Optional; Set log level on init to specified value. Values: Info, Warn, Error, etc; If not set, default value: INFO; Example: DEBUG
+  logLevel: 'INFO'
+  #??? Mandatory; Factual APIHUB SNIFFER AGENT server URL for client connection; Required for integration with API development tools like Newman or Postman ; Example: apihub-sniffer-agent.example.com
+  snifferUrl: ''
+  #??? Mandatory;  APIKEY to integration with APIHUB SNIFFER AGENT server; Example: LS0tLS1CRUdJTiBQUklWQV...
+  snifferApiKey: ''
+  #???
+  snifferInternalKey: ''
+  # Section with enviroment parameters for APIHUB SNIFFER AGENT
   env:
-    logLevel: 'INFO'
-    s3StorageUsername: ''
-    s3StoragePassword: ''
-#   public.crt | base64
-    s3StorageCrt: ''
-    s3StorageUrl: 'minio.minio-tenant'
-    s3StorageBucketName: 'qubership-apihub-sniffer-s3-bucket'
-    s3StorageActive: 'true'
-    snifferApiKey: ''
-    snifferInternalKey: ''
+    #???
     cloudName: ''
-    agentUrl: 'qubership-apihub-sniffer-agent.localtest.me'
-  spec:
-    nodeSelectorKey: ''
-    nodeSelectorValue: ''
-
+    # Section with S3 storage integration parameters.
+    s3Storage:
+      # Mandatory; Access Key ID from S3 storage; Example: s3-access-key
+      username: ''
+      # Mandatory; Secret key for S3 storage access; Example: s3-secret-key
+      password: ''
+      # Mandatory; Certificate for accessing S3 storage; Example: LS0tLS1CRUdJTiBQUklWQV...
+      crt: ''
+      # Mandatory; S3 endpoint for client connection; Example: s3.example.com
+      url: ''
+      # Mandatory; Bucket name in S3 storage; Example: apihub-sniffer-s3-bucket
+      bucketName: ''
+      # Mandatory; Set to true to enable S3 integration. S3 is used for store temporary relatively large files.; Example: TRUE
+      active: 'true'

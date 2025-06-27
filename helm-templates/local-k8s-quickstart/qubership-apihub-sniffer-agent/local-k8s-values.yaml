@@ -1,11 +1,7 @@
 qubershipApihubSnifferAgent:
-  version: ''
   image:
     repository: 'ghcr.io/netcracker/qubership-apihub-sniffer-agent' 
     tag: 'dev'
-  # Section with resource limits
-  # Mandatory
-  # Below are the default values which are good enough for any cases including production
   resource:
     memory:
       request: "256Mi"
@@ -13,21 +9,16 @@ qubershipApihubSnifferAgent:
     cpu:  
       request: "30m"
       limit: "1"
+  logLevel: 'DEBUG'
+  snifferUrl: 'qubership-apihub-sniffer-agent.localtest.me'
+  snifferApiKey: ''  # Will be filled by the installation script
+  snifferInternalKey: ''  # Will be filled by the installation script
   env:
-    logLevel: 'DEBUG'
-    snifferApiKey: ''
-    snifferInternalKey: ''
-    cloudName: ''
-    agentUrl: 'qubership-apihub-sniffer-agent.localtest.me'
+    cloudName: 'k8s-local'
     s3Storage:
-      username: ''
-      password: ''
-#   public.crt | base64
-      crt: ''
+      username: ''  # Will be filled by the installation script
+      password: ''  # Will be filled by the installation script
+      crt: ''  # Will be filled by the installation script
       url: 'minio.minio-tenant'
       bucketName: 'qubership-apihub-sniffer-s3-bucket'
       active: 'true'
-  spec:
-    nodeSelectorKey: ''
-    nodeSelectorValue: ''
-

@@ -14,7 +14,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: '{{ .Values.qubershipApihubSnifferAgent.env.agentUrl }}'
+    - host: '{{ .Values.qubershipApihubSnifferAgent.snifferUrl }}'
       http:
         paths:
           - path: /

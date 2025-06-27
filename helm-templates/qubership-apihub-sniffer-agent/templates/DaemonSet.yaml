@@ -2,13 +2,10 @@
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
-  annotations:
-    deprecated.daemonset.template.generation: "42"
   name: 'qubership-apihub-sniffer-agent'
   labels:
     name: 'qubership-apihub-sniffer-agent'
     app.kubernetes.io/name: 'qubership-apihub-sniffer-agent'
-    app.kubernetes.io/version: '{{ .Values.qubershipApihubSnifferAgent.version }}'
     app.kubernetes.io/component: 'backend'
     app.kubernetes.io/part-of: 'qubership-apihub-sniffer-agent'
     app.kubernetes.io/managed-by: 'helm'
@@ -18,11 +15,9 @@ spec:
       labels:
         name: 'qubership-apihub-sniffer-agent'
         app.kubernetes.io/name: 'qubership-apihub-sniffer-agent'
-        app.kubernetes.io/version: '{{ .Values.qubershipApihubSnifferAgent.version }}'
         app.kubernetes.io/component: 'backend'
         app.kubernetes.io/part-of: 'qubership-apihub-sniffer-agent'
         app.kubernetes.io/managed-by: 'helm'
-        ssd: "true"
     spec:
       serviceAccountName: 'qubership-apihub-sniffer-agent'
       containers:
@@ -34,7 +29,7 @@ spec:
           protocol: TCP
         env:
         - name: LOG_LEVEL
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.logLevel }}'
+          value: '{{ .Values.qubershipApihubSnifferAgent.logLevel }}'
         - name: LISTEN_ADDRESS
           value: ':8080'
         - name: PRODUCTION_MODE
@@ -57,14 +52,20 @@ spec:
               name: 'qubership-apihub-sniffer-agent-s3-secret'
               key: storage_server_username
         - name: STORAGE_SERVER_BUCKET_NAME
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.s3Storage.bucketName }}'
+          valueFrom:
+            secretKeyRef:
+              name: 'qubership-apihub-sniffer-agent-s3-secret'
+              key: storage_server_bucketname
         - name: STORAGE_SERVER_CRT
           valueFrom:
             secretKeyRef:
               name: 'qubership-apihub-sniffer-agent-s3-secret'
               key: storage_server_crt
         - name: STORAGE_SERVER_URL
-          value: '{{ .Values.qubershipApihubSnifferAgent.env.s3Storage.url }}'        
+          valueFrom:
+            secretKeyRef:
+              name: 'qubership-apihub-sniffer-agent-s3-secret'
+              key: storage_server_url
         - name: STORAGE_SERVER_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -126,18 +127,6 @@ spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       hostPID: true
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: name
-                  operator: In
-                  values:
-                  - 'qubership-apihub-sniffer-agent'
-              topologyKey: 'kubernetes.io/hostname'
   selector:
     matchLabels:
       name: 'qubership-apihub-sniffer-agent'
