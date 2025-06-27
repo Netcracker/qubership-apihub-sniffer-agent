@@ -56,4 +56,4 @@ RUN chmod -R a+rwx /app
 
 USER 10001
 
-ENTRYPOINT ./qubership-apihub-sniffer-agent
+ENTRYPOINT ["./qubership-apihub-sniffer-agent"]
