@@ -1,0 +1,41 @@
+# Section with Qubserhip APIHUB Sniffer Agent configuration
+qubershipApihubSnifferAgent:
+  image:
+    repository: 'ghcr.io/netcracker/qubership-apihub-sniffer-agent' 
+    tag: 'dev'
+  # Section with resource limits
+  # Mandatory
+  # Below are the default values which are good enough for quick start, sandbox and over non production cases
+  resource:
+    memory:
+      request: "256Mi"
+      limit: "256Mi"
+    cpu:  
+      request: "30m"
+      limit: "1"
+  # Optional; Set log level on init to specified value. Values: Info, Warn, Error, etc; If not set, default value: INFO; Example: DEBUG
+  logLevel: 'INFO'
+  # Mandatory; Qubserhip APIHUB Sniffer Agent server URL for Ingress; Example: apihub-sniffer-agent.example.com
+  snifferUrl: ''
+  # Mandatory; API key Qubserhip APIHUB Sniffer Agent public API access. Any string; Example: xyz
+  snifferApiKey: ''
+  # Mandatory; API key Qubserhip APIHUB Sniffer Agent private API access. Any string; Example: xyz
+  snifferInternalKey: ''
+  # Section with enviroment parameters for Qubserhip APIHUB Sniffer Agent
+  env:
+    # Mandatory; Displayable cloud name, added as metadata to collected data; Example: my-cloud
+    cloudName: ''
+    # Section with S3 storage integration parameters.
+    s3Storage:
+      # Mandatory; Access Key ID from S3 storage; Example: s3-access-key
+      username: ''
+      # Mandatory; Secret key for S3 storage access; Example: s3-secret-key
+      password: ''
+      # Mandatory; Certificate for accessing S3 storage; Example: LS0tLS1CRUdJTiBQUklWQV...
+      crt: ''
+      # Mandatory; S3 endpoint for client connection; Example: s3.example.com
+      url: ''
+      # Mandatory; Bucket name in S3 storage. Will be created automatically if not exist; Example: apihub-sniffer-s3-bucket
+      bucketName: ''
+      # Mandatory; Set to true to enable S3 integration. S3 is used for store temporary relatively large files.; Example: TRUE
+      active: 'true'
