@@ -6,5 +6,5 @@ helm install minio-operator --namespace minio-operator --create-namespace minio/
 
 echo "---Complete MinIO operator deploy using Helm---" ; echo ""
 
-# echo "To undeploy minio operator execute:"
+# echo "To uninstall minio operator execute:"
 # echo "helm uninstall minio-operator -n minio-operator"

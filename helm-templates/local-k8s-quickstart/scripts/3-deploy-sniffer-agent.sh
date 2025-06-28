@@ -11,6 +11,6 @@ echo "---Start SNIFFER-AGENT deploy using Helm---"
 helm install qubership-apihub-sniffer-agent -n qubership-apihub-sniffer-agent --create-namespace -f ../qubership-apihub-sniffer-agent/local-k8s-values.yaml -f ../qubership-apihub-sniffer-agent/local-minio-secrets.yaml -f ../qubership-apihub-sniffer-agent/local-sniffer-secrets.yaml  ../../qubership-apihub-sniffer-agent
 echo "---Complete SNIFFER-AGENT deploy using Helm---" ; echo ""
 
-#echo "To undeploy sniffer-agent execute:"
+#echo "To uninstall sniffer-agent execute:"
 #echo "helm uninstall qubership-apihub-sniffer-agent -n qubership-apihub-sniffer-agent"
 

@@ -30,6 +30,6 @@ echo "MinIO TLS certificate: $MINIO_CRT"
 
 echo "---Complete SNIFFER-AGENT deploy using Helm---" ; echo ""
 
-#echo "To undeploy minio tenant execute:"
+#echo "To uninstall minio tenant execute:"
 #echo "helm uninstall minio-tenant -n minio-tenant"
 
