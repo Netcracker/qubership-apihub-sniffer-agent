@@ -1,0 +1,116 @@
+tenant:
+  name: myminio
+  image:
+    repository: quay.io/minio/minio
+    tag: RELEASE.2025-04-08T15-41-24Z
+    pullPolicy: IfNotPresent
+  imagePullSecret: { }
+  initContainers: [ ]
+  scheduler: { }
+  configSecret:
+    name: myminio-env-configuration
+    accessKey: minio
+    secretKey: minio123
+  poolsMetadata:
+    annotations: { }
+    labels: { }
+  pools:
+    - servers: 1  
+      name: pool-0 
+      volumesPerServer: 1  
+      size: 1Gi  
+      storageAnnotations: { }
+      storageLabels: { }
+      annotations: { }
+      labels: { }
+      tolerations: [ ]
+      nodeSelector: { }
+      affinity: { }
+      resources: { }
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+        runAsNonRoot: true
+      containerSecurityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        seccompProfile:
+          type: RuntimeDefault
+      topologySpreadConstraints: [ ]
+  mountPath: /export
+  subPath: /data
+  metrics:
+    enabled: false
+    port: 9000
+    protocol: http
+  certificate:
+    externalCaCertSecret: [ ]
+    externalCertSecret: [ ]
+    requestAutoCert: true
+    certConfig: { }
+  features:
+    bucketDNS: false
+    domains: { }
+    enableSFTP: false
+  buckets: [ ]
+  users: [ ]
+  podManagementPolicy: Parallel
+  liveness: { }
+  readiness: { }
+  startup: { }
+  lifecycle: { }
+  exposeServices: { }
+  serviceAccountName: ""
+  prometheusOperator: false
+  logging: { }
+  serviceMetadata: { }
+  env: [ ]
+  priorityClassName: ""
+  additionalVolumes: [ ]
+  additionalVolumeMounts: [ ]
+ingress:
+  api:
+    enabled: true
+    ingressClassName: "nginx"
+    labels: #{ }
+      app.kubernetes.io/part-of: 'minio'
+      app.kubernetes.io/managed-by: 'helm'
+    annotations:  # { }
+      nginx.ingress.kubernetes.io/proxy-connect-timeout: '3600'
+      nginx.ingress.kubernetes.io/proxy-read-timeout: '3600'
+      nginx.ingress.kubernetes.io/proxy-send-timeout: '3600'
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      nginx.ingress.kubernetes.io/backend-protocol: 'HTTPS'
+    tls: #[ ]
+      - secretName: ''
+        hosts:
+          - minio.localtest.me    
+    host: minio.localtest.me
+    path: /
+    pathType: Prefix
+  console:
+    enabled: true
+    ingressClassName: "nginx"
+    labels: #{ }
+      app.kubernetes.io/part-of: 'minio'
+      app.kubernetes.io/managed-by: 'helm'    
+    annotations: #{ }
+      nginx.ingress.kubernetes.io/proxy-connect-timeout: '3600'
+      nginx.ingress.kubernetes.io/proxy-read-timeout: '3600'
+      nginx.ingress.kubernetes.io/proxy-send-timeout: '3600'
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"      
+      nginx.ingress.kubernetes.io/backend-protocol: 'HTTPS'
+    tls: #[ ]
+      - secretName: ''
+        hosts:
+          - minio-console.localtest.me
+    host: minio-console.localtest.me
+    path: /
+    pathType: Prefix

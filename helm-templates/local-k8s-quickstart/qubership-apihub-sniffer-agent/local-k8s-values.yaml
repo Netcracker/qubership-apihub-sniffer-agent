@@ -1,0 +1,24 @@
+qubershipApihubSnifferAgent:
+  image:
+    repository: 'ghcr.io/netcracker/qubership-apihub-sniffer-agent' 
+    tag: 'dev'
+  resource:
+    memory:
+      request: "256Mi"
+      limit: "256Mi"
+    cpu:  
+      request: "30m"
+      limit: "1"
+  logLevel: 'DEBUG'
+  snifferUrl: 'qubership-apihub-sniffer-agent.localtest.me'
+  snifferApiKey: ''  # Will be filled by the installation script
+  snifferInternalKey: ''  # Will be filled by the installation script
+  env:
+    cloudName: 'k8s-local'
+    s3Storage:
+      username: ''  # Will be filled by the installation script
+      password: ''  # Will be filled by the installation script
+      crt: ''  # Will be filled by the installation script
+      url: 'minio.minio-tenant'
+      bucketName: 'qubership-apihub-sniffer-s3-bucket'
+      active: 'true'
