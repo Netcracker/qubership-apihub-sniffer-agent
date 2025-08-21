@@ -5,7 +5,6 @@ The folder contains internal (private) data types and constants which were not b
 ## Files
 
 * [CachedItem.go](CachedItem.go) An common properties for cached items
-* [CaptureConfig.go](CaptureConfig.go) Capture service static configuration. Contains the configuration options that would never change during run time.
 * [CaptureControllerConfig.go](CaptureControllerConfig.go) a configuration for controller (web interface) implementation
 * [CaptureRequestInternal.go](CaptureRequestInternal.go) an internal representation of capture request to use in capture service. Converted from/to human-readable type received by controller.
 * [CaptureRequestInternal_test.go](CaptureRequestInternal_test.go) a test for internal capture configuration and conversion.
