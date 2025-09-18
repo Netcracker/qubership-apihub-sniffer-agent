@@ -4,7 +4,7 @@ Installation notes
 
 ## PaaS Compatibility list
 
-Thу following PaaS versions are supported:
+The following PaaS versions are supported:
 
 | PaaS type  | Versions      | Support type |
 |------------|---------------|--------------|
