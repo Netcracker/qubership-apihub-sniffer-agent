@@ -13,7 +13,7 @@ require (
 	github.com/minio/minio-go/v7 v7.0.97
 	github.com/netcracker/qubership-core-lib-go-paas-mediation-client/v8 v8.0.1
 	github.com/netcracker/qubership-core-lib-go/v3 v3.0.1
-	github.com/sirupsen/logrus v1.9.3
+	github.com/sirupsen/logrus v1.9.4
 	github.com/stretchr/testify v1.11.1
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
